@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterlistapp/firebase_service.dart';
 import 'package:flutterlistapp/userdata.dart';
 import 'package:flutterlistapp/useritem.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +11,7 @@ class UserList extends StatefulWidget {
 }
 
 class _UserListState extends State<UserList> {
+  FirebaseService firebaseService = new FirebaseService();
   TextEditingController nama = TextEditingController();
 
   TextEditingController umur = TextEditingController();
@@ -82,8 +84,11 @@ class _UserListState extends State<UserList> {
 
                         if (btnSimpanText == btnSimpanTextDefault) {
                           // INI MENUNJUKAN SAVE
-                          daftarUser.add(UserData(
-                              nama.text, int.parse(umur.text), email.text));
+                          UserData userData = new UserData(
+                              nama.text, int.parse(umur.text), email.text);
+                          firebaseService.tambah(userData);
+                          // daftarUser.add(UserData(
+                          //     nama.text, int.parse(umur.text), email.text));
                         } else {
                           UserData userData =
                               daftarUser[selectedDaftarUserIndex];
