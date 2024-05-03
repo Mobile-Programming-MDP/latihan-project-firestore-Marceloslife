@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "90207473903",
+    "project_id": "flutterlistmarcel",
+    "storage_bucket": "flutterlistmarcel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90207473903:android:74933e1a9e5eca5c814b1a",
+        "android_client_info": {
+          "package_name": "com.example.flutterlistapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIc_Bj61hAR2ca07u3YLi6LmiUv3KlCJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
