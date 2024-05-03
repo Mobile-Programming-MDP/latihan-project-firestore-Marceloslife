@@ -4,4 +4,8 @@ class UserData {
   String email;
 
   UserData(this.nama, this.umur, this.email);
+
+  Map<String, dynamic> toJson() {
+    return {"nama": this.nama, "umur": this.umur, "email": this.email};
+  }
 }

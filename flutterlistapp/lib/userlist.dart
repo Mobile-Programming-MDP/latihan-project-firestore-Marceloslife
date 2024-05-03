@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterlistapp/firebase_service.dart';
 import 'package:flutterlistapp/userdata.dart';
@@ -150,79 +151,91 @@ class _UserListState extends State<UserList> {
               thickness: 3,
             ),
             Expanded(
-              child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Dismissible(
-                      key: ValueKey(daftarUser[index]),
-                      child: InkWell(
-                        child: UserItem(daftarUser[index]),
-                        onTap: () {
-                          nama.text = daftarUser[index].nama;
-                          umur.text = daftarUser[index].umur.toString();
-                          email.text = daftarUser[index].email;
-                          btnSimpanColor = btnUbahColor;
-                          btnSimpanText = btnUbahText;
-                          setState(() {
-                            btnSimpanColor;
-                            btnSimpanText;
-                          });
-                          selectedDaftarUserIndex = index;
-                        },
-                      ),
-                      background: Container(
-                        padding: EdgeInsets.only(left: 25),
-                        color: Colors.red,
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Icon(
-                              Icons.delete,
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: firebaseService.ambildata(),
+                  builder: (context, snapshot) {
+                    return ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot documentSnapshot =
+                              snapshot.data!.docs[index];
+                          UserData userData = new UserData(
+                              documentSnapshot['nama'],
+                              documentSnapshot['umur'],
+                              documentSnapshot['email']);
+                          return Dismissible(
+                            key: ValueKey(userData),
+                            child: InkWell(
+                              child: UserItem(userData),
+                              onTap: () {
+                                nama.text = userData.nama;
+                                umur.text = userData.umur.toString();
+                                email.text = userData.email;
+                                btnSimpanColor = btnUbahColor;
+                                btnSimpanText = btnUbahText;
+                                setState(() {
+                                  btnSimpanColor;
+                                  btnSimpanText;
+                                });
+                                selectedDaftarUserIndex = index;
+                              },
+                            ),
+                            background: Container(
+                              padding: EdgeInsets.only(left: 25),
+                              color: Colors.red,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                            secondaryBackground: Container(
                               color: Colors.white,
-                            )),
-                      ),
-                      secondaryBackground: Container(
-                        color: Colors.white,
-                      ),
-                      dismissThresholds: {DismissDirection.startToEnd: 0.2},
-                      onDismissed: (direction) {
-                        daftarUser.removeAt(index);
-                        setState(() {
-                          daftarUser;
-                        });
-                        // inspect(daftarUser);
-                      },
-                      confirmDismiss: (direction) async {
-                        if (direction == DismissDirection.startToEnd) {
-                          return await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text("Confirm"),
-                                content: const Text(
-                                    "Are you sure you wish to delete this item?"),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: const Text("DELETE")),
-                                  ElevatedButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
-                                    child: const Text("CANCEL"),
-                                  ),
-                                ],
-                              );
+                            ),
+                            dismissThresholds: {
+                              DismissDirection.startToEnd: 0.2
+                            },
+                            onDismissed: (direction) {
+                              daftarUser.removeAt(index);
+                              setState(() {
+                                daftarUser;
+                              });
+                              // inspect(daftarUser);
+                            },
+                            confirmDismiss: (direction) async {
+                              if (direction == DismissDirection.startToEnd) {
+                                return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Confirm"),
+                                      content: const Text(
+                                          "Are you sure you wish to delete this item?"),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                            child: const Text("DELETE")),
+                                        ElevatedButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: const Text("CANCEL"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                return false;
+                              }
                             },
                           );
-                        } else {
-                          return false;
-                        }
-                      },
-                    );
-                  },
-                  separatorBuilder: (context, index) => Divider(),
-                  itemCount: daftarUser.length),
+                        },
+                        separatorBuilder: (context, index) => Divider(),
+                        itemCount: snapshot.data!.docs.length);
+                  }),
             ),
           ],
         ),
