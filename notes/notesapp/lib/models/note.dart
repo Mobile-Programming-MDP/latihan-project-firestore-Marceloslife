@@ -4,6 +4,7 @@ class Note {
   String? id;
   final String title;
   final String description;
+  // KARENA OPSIONAL BOLEH ADA BOLEH NGGAK
   String? imageUrl;
   Timestamp? createdAt;
   Timestamp? updatedAt;

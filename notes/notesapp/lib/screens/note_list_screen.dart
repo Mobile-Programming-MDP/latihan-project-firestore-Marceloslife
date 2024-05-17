@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:notesapp/models/note.dart';
 import 'package:notesapp/services/note_service.dart';
 import 'package:notesapp/widgets/note_dialog.dart';
@@ -41,7 +40,7 @@ class NoteList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: NoteService.getNotesList(),
+      stream: NoteService.getNoteList(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -55,7 +54,6 @@ class NoteList extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.only(bottom: 80),
               children: snapshot.data!.map((document) {
-                var description;
                 return Card(
                   child: ListTile(
                     onTap: () {
@@ -70,7 +68,7 @@ class NoteList extends StatelessWidget {
                     subtitle: Text(document.description),
                     trailing: InkWell(
                       onTap: () {
-                        showAlertDialog(context, document as Note);
+                        showAlertDialog(context, document);
                       },
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
@@ -97,7 +95,7 @@ class NoteList extends StatelessWidget {
     Widget continueButton = ElevatedButton(
       child: const Text("Yes"),
       onPressed: () {
-        NoteService.deleteNote(document as String).whenComplete(() {
+        NoteService.deleteNote(document).whenComplete(() {
           Navigator.of(context).pop();
         });
       },
