@@ -69,14 +69,35 @@ class NoteList extends StatelessWidget {
                         },
                         title: Text(document.title),
                         subtitle: Text(document.description),
-                        trailing: InkWell(
-                          onTap: () {
-                            showAlertDialog(context, document);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Icon(Icons.delete),
-                          ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            document.lat != null && document.lng != null
+                                ? InkWell(
+                                    onTap: () {},
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: Icon(Icons.delete),
+                                    ),
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Icon(
+                                      Icons.map,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                            InkWell(
+                              onTap: () {
+                                showAlertDialog(context, document);
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Icon(Icons.delete),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       if (document.imageUrl != null &&
