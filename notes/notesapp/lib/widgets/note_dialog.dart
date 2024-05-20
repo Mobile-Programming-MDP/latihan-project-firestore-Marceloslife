@@ -3,13 +3,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:notesapp/models/note.dart';
 import 'package:notesapp/services/loacation_service.dart';
-import 'package:notesapp/services/location_service.dart';
 import 'package:notesapp/services/note_service.dart';
 
 class NoteDialog extends StatefulWidget {
   final Note? note;
 
-  NoteDialog({super.key, this.note});
+  const NoteDialog({super.key, this.note});
 
   @override
   State<NoteDialog> createState() => _NoteDialogState();
@@ -23,7 +22,6 @@ class _NoteDialogState extends State<NoteDialog> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.note != null) {
       _titleController.text = widget.note!.title;
