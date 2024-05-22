@@ -1,5 +1,8 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:notesapp/models/note.dart';
+import 'package:notesapp/screens/map_screen.dart';
 import 'package:notesapp/services/note_service.dart';
 import 'package:notesapp/widgets/note_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -91,7 +94,16 @@ class NoteList extends StatelessWidget {
                             document.lat != null && document.lng != null
                                 ? InkWell(
                                     onTap: () {
-                                      openMap(document.lat, document.lng);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MapScreen(
+                                            document.lat,
+                                            document.lng,
+                                          ),
+                                        ),
+                                      );
+                                      //openMap(document.lat, document.lng);
                                     },
                                     child: const Padding(
                                       padding:
